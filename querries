@@ -1,0 +1,138 @@
+SELECT trip.trip_time as time, city.city_name as from_city, city.city_name as to_city
+FROM trip, city
+WHERE trip.id = 1 AND trip.route_fk = route.id AND route.city_from_fk = city.id AND route.city_to_fk = city.id
+
+
+SELECT trip.time as time, cityFrom.name as from_city, cityTo.name as to_city
+FROM trip, route
+LEFT JOIN city AS cityFrom ON  cityFrom.id = route.city_from_fk
+LEFT JOIN city AS cityTo ON cityTo.id = route.city_to_fk
+WHERE trip.route_fk = route.id
+
+querry grazina count
+
+SELECT cityFrom.name as from_city, cityTo.name as city_to ,SUM(IF(ticket.login_fk IS NULL, 1, 0)) as available_tickets, COUNT(ticket.login_fk) as sold_tickets
+FROM ticket, trip, route
+LEFT JOIN city AS cityFrom ON  cityFrom.id = route.city_from_fk
+LEFT JOIN city AS cityTo ON cityTo.id = route.city_to_fk
+WHERE ticket.trip_fk = trip.id AND trip.route_fk = route.id
+GROUP BY trip.id LIMIT 0,10
+
+SELECT trip.time, trip.price, SUM(IF(ticket.login_fk IS NULL, 1, 0)) as available_tickets
+FROM ticket,trip, route
+LEFT JOIN city AS cityFrom ON  cityFrom.name = 'Klaipeda'
+LEFT JOIN city AS cityTo ON cityTo.name = 'Alytus'
+WHERE trip.route_fk = route.id AND cityFrom.id = route.city_from_fk AND cityTo.id = route.city_to_fk AND ticket.trip_fk = trip.id
+GROUP BY trip.id
+============================================================================
+INSERT INTO `city` (`id`, `name`) VALUES (NULL, 'Klaipeda'), (NULL, 'Alytus'), (NULL, 'Kaunas'), (NULL, 'Vilnius'), (NULL, 'Rokiskis');
+
+INSERT INTO `bus` (`bus_space`) VALUES('22'),('21'),('21'),('21'),('21'),('30'),('30'),('30'),('30')
+
+INSERT INTO `route` (`id`, `city_from_fk`, `city_to_fk`) VALUES (NULL, '1', '2'), (NULL, '1', '3'), (NULL, '2', '1'), (NULL, '3', '1'), (NULL, '5', '4');
+
+INSERT INTO `trip` (`id`, `route_fk`, `date`, `time`, `bus_fk`) VALUES (NULL, '1', '2016-11-15', '06:14:00', '2'), (NULL, '2', '2016-11-16', '16:00:00', '9');
+
+INSERT INTO `ticket` (`id`, `price`, `trip_fk`, `login_fk`) VALUES (NULL, '10.14', '1', NULL), (NULL, '10.14', '1', NULL);
+============================================================================
+CREATE TABLE login(
+`id` INT NOT NULL AUTO_INCREMENT,
+`username` VARCHAR(80) NOT NULL,
+`password` VARCHAR(100) NOT NULL,
+`type` ENUM('Member', 'Administrator', 'Manager') DEFAULT 'Member',
+`isBlocked` BOOL DEFAULT FALSE,
+ PRIMARY KEY(id)
+) ENGINE=INNODB;
+ALTER TABLE `login` ADD UNIQUE(`username`);
+
+CREATE TABLE city(
+id INT NOT NULL AUTO_INCREMENT,
+city_name VARCHAR(20) NOT NULL,
+PRIMARY KEY(id)
+)ENGINE=INNODB;
+
+CREATE TABLE bus(
+id INT NOT NULL AUTO_INCREMENT,
+bus_space INT NOT NULL,
+PRIMARY KEY(id)
+) ENGINE=INNODB;
+
+CREATE TABLE route(
+id INT NOT NULL AUTO_INCREMENT,
+city_from_fk INT NOT NULL,
+city_to_fk INT NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (city_from_fk) REFERENCES city(id),
+FOREIGN KEY (city_to_fk) REFERENCES city(id)
+)ENGINE=INNODB;
+
+CREATE TABLE trip(
+  id INT NOT NULL AUTO_INCREMENT,
+  route_fk INT NOT NULL,
+  trip_date DATE NOT NULL,
+  trip_time TIME NOT NULL,
+  bus_fk INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (route_fk) REFERENCES route(id),
+  FOREIGN KEY (bus_fk) REFERENCES bus(id)
+) ENGINE=INNODB;
+
+CREATE TABLE ticket(
+id INT NOT NULL AUTO_INCREMENT,
+price FLOAT(5,2) NOT NULL,
+trip_fk INT NOT NULL,
+login_fk INT,
+PRIMARY KEY(id),
+FOREIGN KEY (trip_fk) REFERENCES trip(id),
+FOREIGN KEY (login_fk) REFERENCES login(id)
+)ENGINE=INNODB;
+================================================================================================================================================================
+CREATE TABLE login(
+`id` INT NOT NULL AUTO_INCREMENT,
+`username` VARCHAR(80) NOT NULL,
+`password` VARCHAR(100) NOT NULL,
+`type` ENUM('Member', 'Administrator', 'Manager') DEFAULT 'Member',
+ PRIMARY KEY(id)
+) ENGINE=INNODB;
+
+CREATE TABLE city(
+`id` INT NOT NULL AUTO_INCREMENT,
+`name` VARCHAR(20) NOT NULL,
+PRIMARY KEY(id)
+)ENGINE=INNODB;
+
+CREATE TABLE bus(
+`id` INT NOT NULL AUTO_INCREMENT,
+`bus_space` INT NOT NULL,
+PRIMARY KEY(id)
+) ENGINE=INNODB;
+
+CREATE TABLE route(
+`id` INT NOT NULL AUTO_INCREMENT,
+`city_from_fk` INT NOT NULL,
+`city_to_fk` INT NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (city_from_fk) REFERENCES city(id),
+FOREIGN KEY (city_to_fk) REFERENCES city(id)
+)ENGINE=INNODB;
+
+CREATE TABLE trip(
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `route_fk` INT NOT NULL,
+  `date` DATE NOT NULL,
+  `time` TIME NOT NULL,
+  `bus_fk` INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (route_fk) REFERENCES route(id),
+  FOREIGN KEY (bus_fk) REFERENCES bus(id)
+) ENGINE=INNODB;
+
+CREATE TABLE ticket(
+`id` INT NOT NULL AUTO_INCREMENT,
+`price` FLOAT(5,2) NOT NULL,
+`trip_fk` INT NOT NULL,
+`login_fk` INT,
+PRIMARY KEY(id),
+FOREIGN KEY (trip_fk) REFERENCES trip(id),
+FOREIGN KEY (login_fk) REFERENCES login(id)
+)ENGINE=INNODB;

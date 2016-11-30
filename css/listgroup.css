@@ -1,0 +1,13 @@
+a.listgrouptitle, a.listgrouptitle:hover {
+  background-color: #337ab7;
+  color: #fff;
+}
+a.list-group-item.active {
+  background-color: #b3cccc;
+  border-color: #b3cccc;
+  color: #555;
+}
+a.list-group-item.active:hover {
+    background-color: #f5f5f5;
+    color: #555;
+  }
