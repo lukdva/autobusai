@@ -35,7 +35,7 @@ include "timetable_Querries.php";
 <link rel="stylesheet" type="text/css" href="./css/listgroup.css">
   <script>
   $( function() {
-    $( "#datetimepicker" ).datetimepicker(
+    $( "#datetimepicker, #datetimepicker2" ).datetimepicker(
       {
       format: 'YYYY-MM-DD HH:mm:ss',
       value: new Date()
@@ -120,60 +120,78 @@ $(function() {
 </nav>
 
 
+<?php if (isset($_GET['option']) && ($_GET['option'] == 'displayTrips' || $_GET['option'] == 'displayRoutes'))
+{ ?>
+  <form id="searchTripForm" method="post" class="form-inline">
+      <div class="container">
 
-<form id="searchTripForm" method="post" class="form-inline">
-    <div class="container">
+        <div class="form-group">
+          <label class="col-xs-3 control-label">City from</label>
+          <div class="col-xs-5 selectContainer">
+              <select class="form-control" name="city_from">
+                <option value="">Choose a city</option>
+                  <?php
+                  foreach ($cities as $key => $value)
+                  {
+                    echo '<option value="'.$value.'">'.$value.'</option>';
+                  }
+
+                   ?>
+              </select>
+          </div>
+      </div>
 
       <div class="form-group">
-        <label class="col-xs-3 control-label">City from</label>
-        <div class="col-xs-5 selectContainer">
-            <select class="form-control" name="city_from">
-              <option value="">Choose a city</option>
-                <?php
-                foreach ($cities as $key => $value) {
-                  echo '<option value="'.$value.'">'.$value.'</option>';                }
+          <label class="col-xs-3 control-label">City to</label>
+          <div class="col-xs-5 selectContainer">
+              <select class="form-control" name="city_to">
+                <option value="">Choose a city</option>
+                  <?php
+                  foreach ($cities as $key => $value)
+                  {
+                    echo '<option value="'.$value.'">'.$value.'</option>';
+                  }
 
-                 ?>
-            </select>
-        </div>
-    </div>
+                   ?>
+              </select>
+          </div>
+      </div>
+  <?php if (isset($_GET['option']) && $_GET['option'] == 'displayTrips')
+  { ?>
+          <div class="form-group">
+              <div class='col-lg-12 col-md-9 col-sm-6 '>
 
-    <div class="form-group">
-        <label class="col-xs-3 control-label">City to</label>
-        <div class="col-xs-5 selectContainer">
-            <select class="form-control" name="city_to">
-              <option value="">Choose a city</option>
-                <?php
-                foreach ($cities as $key => $value)
-                {
-                  echo '<option value="'.$value.'">'.$value.'</option>';
-                }
+                  <div class='input-group date' id='datetimepicker'>
+                      <input type='text' class="form-control" name="datetime"/>
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                  </div>
+              </div>
+          </div>
 
-                 ?>
-            </select>
-        </div>
-    </div>
+          <div class="form-group">
+              <div class='col-lg-12 col-md-9 col-sm-6 '>
 
-<div class="form-group">
-        <div class='col-lg-12 col-md-9 col-sm-6 '>
+                  <div class='input-group date' id='datetimepicker2'>
+                      <input type='text' class="form-control" name="datetime2"/>
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                  </div>
+              </div>
+          </div>
+  <?php
+  }?>
+      <div class="form-group">
+          <div class="col-xs-5 col-xs-offset-3">
+              <button type="submit" class="btn btn-default">Add new shirt</button>
+          </div>
+      </div>
 
-                <div class='input-group date' id='datetimepicker'>
-                    <input type='text' class="form-control" name="datetime"/>
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-
-    <div class="form-group">
-        <div class="col-xs-5 col-xs-offset-3">
-            <button type="submit" class="btn btn-default">Add new shirt</button>
-        </div>
-    </div>
-
-</form>
-
+  </form>
+<?php
+} ?>
       <div class="row">
         <div class="col-md-3">
 
@@ -185,6 +203,8 @@ $(function() {
             <a href="?option=addTrip" class="list-group-item">Add new Trip</a>
             <a href="?option=displayCities" class="list-group-item">Display Cities</a>
             <a href="?option=addCity" class="list-group-item">Add new City</a>
+            <a href="?option=displayBusses" class="list-group-item">Display Busses</a>
+            <a href="?option=addBus" class="list-group-item">Add new Bus</a>
           </div>
 
         </div>
@@ -212,6 +232,12 @@ $(function() {
                     break;
                     case 'addCity':
                       include "addCity.php";
+                    break;
+                    case 'displayBusses':
+                      include "displayBusses.php";
+                    break;
+                    case 'addBus':
+                      include "addBus.php";
                     break;
                     default:
                       echo"<h1>Choose an option </h1>";

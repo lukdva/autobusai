@@ -5,7 +5,7 @@
   if(isset($_POST['city_to']) && isset($_POST['city_from']) && $_POST['city_to'] != null && $_POST['city_from'] != null)
   {
     $isInserted = true;
-
+//==================================TIKRINAM AR NERA TOKIO PAT DB================================================================================
     $sql = "SELECT COUNT(*) AS kiek
             FROM route
             LEFT JOIN city AS cityFrom ON cityFrom.id
@@ -20,6 +20,7 @@
     if ($row['kiek'] > 0) {
       $isunique = false;
     }
+    //==================================================================================================================
     else
     {
       try
@@ -42,7 +43,8 @@
         $isInserted = false;
       }
     }
-    //Pranesimas kad pavyko
+    //==================================================================================================================
+
   }
  ?>
 
@@ -88,6 +90,7 @@
  </form>
 
  <?php
+ //=============================PRANESIMO TEKSTAS=====================================================================================
  if(isset($_POST['city_to']) && isset($_POST['city_from']))
  {
    if ($isunique)

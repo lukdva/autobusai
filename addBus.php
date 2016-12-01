@@ -2,15 +2,15 @@
   include "config.php";
   $isInserted = false;
   $isunique = true;
-  if(isset($_POST['addNewCity']) && $_POST['addNewCity'] != null)
+  if(isset($_POST['addBusId']) && $_POST['addBusId'] != '' && isset($_POST['addBusCapacity']) && $_POST['addBusCapacity'] != '')
   {
     $isInserted = true;
 
     $sql = "SELECT COUNT(*) AS kiek
-            FROM city
-            WHERE name = ?";
+            FROM bus
+            WHERE id = ?";
     $stmt = $db->prepare($sql);
-    $stmt->bindParam(1, $_POST['addNewCity']);
+    $stmt->bindParam(1, $_POST['addBusId']);
 
     $stmt->execute();
     $row = $stmt->fetch();
@@ -22,11 +22,11 @@
       try
       {
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO `city` (`id`, `name`)
-                VALUES(NULL , ?)";
+        $sql = "INSERT INTO `bus` (`id`, `bus_space`)
+                VALUES(? , ?)";
         $stmt = $db->prepare($sql);
-        $stmt->bindParam(1, $_POST['addNewCity']);
-
+        $stmt->bindParam(1, $_POST['addBusId']);
+        $stmt->bindParam(2, $_POST['addBusCapacity']);
         $stmt->execute();
       }
       catch(PDOException $e)
@@ -40,16 +40,19 @@
 
    <form id="addNewCity" method="post" class="form-inline">
        <div class="form-group">
-         <input type="text" class="form-control" placeholder="City name" name="addNewCity">
+         <input type="number" min=1 class="form-control" placeholder="ID" name="addBusId">
+       </div>
+       <div class="form-group">
+         <input type="number" min=1 class="form-control" placeholder="Bus capacity" name="addBusCapacity">
        </div>
        <div class="form-group">
        <button href = ""type="submit" class="btn btn-default">Add</button>
        <div class="form-group">
    </form>
    <br>
-   
+
  <?php
- if(isset($_POST['addNewCity']))
+ if(isset($_POST['addBusId']) && isset($_POST['addBusCapacity']))
  {
    if ($isunique)
    {
@@ -57,7 +60,7 @@
      if($isInserted)
      { ?>
          <div class="alert alert-success">
-          <strong>City has been added.</strong>
+          <strong>Bus has been added.</strong>
         </div>
         <?php
       }
@@ -72,7 +75,7 @@
   else
   {?>
     <div class="alert alert-warning">
-      <strong>This city already exist</strong>
+      <strong>This bus ID already exist</strong>
     </div>
 <?php
   }
