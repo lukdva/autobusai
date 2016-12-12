@@ -52,24 +52,25 @@
      <div class="container">
 
        <div class="form-group">
-         <label class="col-xs-3 control-label">City from</label>
+         <label class="col-xs-3 control-label">Iš</label>
          <div class="col-xs-5 selectContainer">
              <select class="form-control" name="city_from">
-               <option value="">Choose a city</option>
+               <option value="">Pasirinkite miestą</option>
                  <?php
-                 foreach ($cities as $key => $value) {
-                   echo '<option value="'.$value.'">'.$value.'</option>';                }
-
+                 foreach ($cities as $key => $value)
+                 {
+                   echo '<option value="'.$value.'">'.$value.'</option>';
+                 }
                   ?>
              </select>
          </div>
      </div>
 
      <div class="form-group">
-         <label class="col-xs-3 control-label">City to</label>
+         <label class="col-xs-3 control-label">Į</label>
          <div class="col-xs-5 selectContainer">
              <select class="form-control" name="city_to">
-               <option value="">Choose a city</option>
+               <option value="">Pasirinkite miestą</option>
                  <?php
                  foreach ($cities as $key => $value)
                  {
@@ -83,7 +84,7 @@
 
      <div class="form-group">
          <div class="col-xs-5 col-xs-offset-3">
-             <button type="submit" class="btn btn-default">Add new Route</button>
+             <button type="submit" class="btn btn-default">Pridėti</button>
          </div>
      </div>
 
@@ -99,14 +100,14 @@
      if($isInserted)
      { ?>
          <div class="alert alert-success">
-          <strong>Route has been added.</strong>
+          <strong>Maršrutas pridėtas.</strong>
         </div>
         <?php
       }
       else
       { ?>
       <div class="alert alert-danger">
-        <strong>Unable to insert!</strong>
+        <strong>Nepavyko pridėti maršruto!</strong>
       </div>
       <?php
       }
@@ -114,7 +115,7 @@
   else
   {?>
     <div class="alert alert-warning">
-      <strong>This route already exist</strong>
+      <strong>Šis maršrutas jau egzistuoja.</strong>
     </div>
 <?php
   }

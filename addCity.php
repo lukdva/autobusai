@@ -40,14 +40,14 @@
 
    <form id="addNewCity" method="post" class="form-inline">
        <div class="form-group">
-         <input type="text" class="form-control" placeholder="City name" name="addNewCity">
+         <input type="text" class="form-control" placeholder="Miesto pavadinimas" name="addNewCity">
        </div>
        <div class="form-group">
-       <button href = ""type="submit" class="btn btn-default">Add</button>
+       <button href = ""type="submit" class="btn btn-default">Pridėti</button>
        <div class="form-group">
    </form>
    <br>
-   
+
  <?php
  if(isset($_POST['addNewCity']))
  {
@@ -57,14 +57,14 @@
      if($isInserted)
      { ?>
          <div class="alert alert-success">
-          <strong>City has been added.</strong>
+          <strong>Miestas buvo pridėtas.</strong>
         </div>
         <?php
       }
       else
       { ?>
       <div class="alert alert-danger">
-        <strong>Unable to insert!</strong>
+        <strong>Nepavyko pridėti miesto!</strong>
       </div>
       <?php
       }
@@ -72,7 +72,7 @@
   else
   {?>
     <div class="alert alert-warning">
-      <strong>This city already exist</strong>
+      <strong>Šis miestas jau pridėtas.</strong>
     </div>
 <?php
   }

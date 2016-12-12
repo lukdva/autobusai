@@ -38,15 +38,15 @@
   }
  ?>
 
-   <form id="addNewCity" method="post" class="form-inline">
+   <form id="addNewBus" method="post" class="form-inline">
        <div class="form-group">
          <input type="number" min=1 class="form-control" placeholder="ID" name="addBusId">
        </div>
        <div class="form-group">
-         <input type="number" min=1 class="form-control" placeholder="Bus capacity" name="addBusCapacity">
+         <input type="number" min=1 class="form-control" placeholder="Talpa" name="addBusCapacity">
        </div>
        <div class="form-group">
-       <button href = ""type="submit" class="btn btn-default">Add</button>
+       <button href = ""type="submit" class="btn btn-default">Pridėti</button>
        <div class="form-group">
    </form>
    <br>
@@ -60,14 +60,14 @@
      if($isInserted)
      { ?>
          <div class="alert alert-success">
-          <strong>Bus has been added.</strong>
+          <strong>Autobusas pridėtas.</strong>
         </div>
         <?php
       }
       else
       { ?>
       <div class="alert alert-danger">
-        <strong>Unable to insert!</strong>
+        <strong>Nepavyko pridėti!</strong>
       </div>
       <?php
       }
@@ -75,7 +75,7 @@
   else
   {?>
     <div class="alert alert-warning">
-      <strong>This bus ID already exist</strong>
+      <strong>Autobusas egzistuoja su tokiu ID</strong>
     </div>
 <?php
   }

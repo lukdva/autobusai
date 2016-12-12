@@ -10,10 +10,6 @@ if(!isset($_SESSION['username']))
 $stmt = $db->prepare("SELECT name FROM city");
 $stmt->execute();
 $rows = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-print_r($rows);
-foreach ($rows as $key => $value) {
-  echo $value;
-}
 ?>
 
 
@@ -26,7 +22,7 @@ foreach ($rows as $key => $value) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>Autobusų tvarkaraštis</title>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins)-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
@@ -44,7 +40,12 @@ foreach ($rows as $key => $value) {
     $( "#datetimepicker" ).datetimepicker();
   } );
   </script>
-
+  <script>
+  // for navigation highlighting NOT working for nav header
+  $(function() {
+    $('nav div a[href*="' + location.pathname.split("/")[2] + '"]').parent().addClass('active');
+  });
+  </script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -53,45 +54,8 @@ foreach ($rows as $key => $value) {
     <![endif]-->
   </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-static-top">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="index.php">
-        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-      </a>
-    </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-        <li><a href="timetable.php">Timetable</a></li>
-        <li><a href="manageusers.php">User List(adminui)</a></li>
-        <li><a href="manageTimetables.php">Manage Timetables & routes(managerONLY)</a></li>
-      </ul>
-
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">User type</a></li>
-            <li><a href="#">Profile</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="logout.php">Logout</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+    <?php include "navbar.php"; ?>
 
 
 
@@ -99,10 +63,10 @@ foreach ($rows as $key => $value) {
     <div class="container">
 
       <div class="form-group">
-        <label class="col-xs-3 control-label">City from</label>
+        <label class="col-xs-3 control-label">Iš</label>
         <div class="col-xs-5 selectContainer">
             <select class="form-control" name="city_to">
-              <option value="">Choose a city</option>
+              <option value="">Pasirinkite miestą</option>
                 <?php
                 foreach ($rows as $key => $value) {
                   echo '<option value="'.$value.'">'.$value.'</option>';                }
@@ -113,10 +77,10 @@ foreach ($rows as $key => $value) {
     </div>
 
     <div class="form-group">
-        <label class="col-xs-3 control-label">City to</label>
+        <label class="col-xs-3 control-label">Į</label>
         <div class="col-xs-5 selectContainer">
             <select class="form-control" name="color">
-              <option value="">Choose a city</option>
+              <option value="">Pasirinkite miestą</option>
                 <?php
                 foreach ($rows as $key => $value) {
                   echo '<option value="'.$value.'">'.$value.'</option>';                }
@@ -140,7 +104,7 @@ foreach ($rows as $key => $value) {
 
     <div class="form-group">
         <div class="col-xs-5 col-xs-offset-3">
-            <button type="submit" class="btn btn-default">Add new shirt</button>
+            <button type="submit" class="btn btn-default">Ieškoti</button>
         </div>
     </div>
 
@@ -163,15 +127,6 @@ foreach ($rows as $key => $value) {
         </div>
       </div>
     </div>
-
-
-
-
-
-
-
-
-
 
   </body>
 </html>

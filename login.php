@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>Autobusų tvarkaraštis</title>
 
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -50,7 +50,7 @@
 
                             <div class="alert alert-danger alert-dismissible" role="alert">
                               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                              <strong>Warning!</strong> Better check yourself, you're not looking too good.
+                              <strong>Neteisingas slaptažodis arba vartotojo vardas.</strong>
                             </div>
 
                             <?php
@@ -60,14 +60,14 @@
                      ?>
                       <form method="post">
                         <div class="form-group">
-                          <label>Username</label>
+                          <label>Vartotojo vardas</label>
                           <input type="text" class="form-control" name="username"/>
                         </div>
                         <div class="form-group">
-                          <label>Password</label>
+                          <label>Slaptažodis</label>
                           <input type="password" class="form-control" name="password"/>
                         </div>
-                          <input type="submit" value="Login" class="btn btn-primary"/>
+                          <input type="submit" value="Prisijungti" class="btn btn-primary"/>
                       </form>
 
                   </div>

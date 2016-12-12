@@ -36,6 +36,16 @@
     {
       try
       {
+        //Getting bus capacity
+        $sql = "SELECT bus_space
+                FROM bus
+                WHERE id = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(1, $_POST['bus']);
+        $stmt->execute();
+        $bus_space_row = $stmt->fetch();
+        $bus_space = $bus_space_row["bus_space"];
+        //inserting trip
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $sql = "INSERT INTO `trip` (`id`, `route_fk`, `date`, `time`, `bus_fk`, `price`)
                 VALUES( NULL, ?, ?, ?, ? ,?)";
@@ -46,6 +56,19 @@
         $stmt->bindParam(4, $_POST['bus']);
         $stmt->bindParam(5, $_POST['price']);
         $stmt->execute();
+        $lastId = $db->lastInsertId();
+        print_r($lastId);
+        print_r($bus_space);
+        //Inserting tickets for trip
+        for ($i=0; $i < $bus_space; $i++) {
+            $sql = "INSERT INTO `ticket` (`id`, `price`, `trip_fk`, `login_fk`)
+                    VALUES( NULL, ?, ?, NULL)";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(1, $_POST['price']);
+            $stmt->bindParam(2, $lastId);
+            $stmt->execute();
+        }
+
       }
       catch(PDOException $e)
       {
@@ -64,7 +87,7 @@
        <div class="form-group">
          <div class="col-xs-5 selectContainer">
              <select class="form-control" name="route">
-               <option value="">Choose a route</option>
+               <option value="">Pasirinkite maršrutą</option>
                  <?php
                  foreach ($routes as $route) {
                    echo '<option value="'.$route['route'].'">'.$route['city_from']." - ".$route['city_to'].'</option>';                }
@@ -89,7 +112,7 @@
        <div class="form-group">
          <div class="col-xs-5 selectContainer">
              <select class="form-control" name="bus">
-               <option value="">Choose a bus</option>
+               <option value="">Pasirinkite autobusą</option>
                  <?php
                  foreach ($busses as $bus)
                  {
@@ -108,7 +131,7 @@
 
      <div class="form-group">
          <div class="col-xs-5 col-xs-offset-3">
-             <button type="submit" class="btn btn-default">Add new Trip</button>
+             <button type="submit" class="btn btn-default">Pridėti</button>
          </div>
      </div>
 
@@ -124,14 +147,14 @@
      if($isInserted)
      { ?>
          <div class="alert alert-success">
-          <strong>Trip has been added.</strong>
+          <strong>Kelionė pridėta.</strong>
         </div>
         <?php
       }
       else
       { ?>
       <div class="alert alert-danger">
-        <strong>Unable to insert!</strong>
+        <strong>Nepavyko pridėti!</strong>
       </div>
       <?php
       }
@@ -139,7 +162,7 @@
   else
   {?>
     <div class="alert alert-warning">
-      <strong>Choose later time</strong>
+      <strong>Pasirinkite vėlesnį laiką.</strong>
     </div>
 <?php
   }
