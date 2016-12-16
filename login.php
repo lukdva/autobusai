@@ -68,6 +68,8 @@
                           <input type="password" class="form-control" name="password"/>
                         </div>
                           <input type="submit" value="Prisijungti" class="btn btn-primary"/>
+                          <a href="registration.php"class="pull-right">Registracija</a>
+                          <a href="index.php"class="pull-right">Pagrindinis</a>
                       </form>
 
                   </div>
