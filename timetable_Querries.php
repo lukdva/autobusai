@@ -4,11 +4,32 @@ $today = date("Y-m-d");                   // 2001-03-10
 $now = date("H:i:s");                   // 17:16:18
 
 include "config.php";
-$isSetCityTo = isset($_POST['city_to']);
-$isSetCityFrom = isset($_POST['city_from']);
-$isSetDateTime = isset($_POST['datetime']);
 
-if($isSetCityTo && $isSetCityFrom && $isSetDateTime)
+//Buying ticket
+if(isset($_GET['trip_id']))
+{
+  //Selecting one tickets id
+  $stmt = $db->prepare(
+      "SELECT id
+      FROM ticket
+      WHERE trip_fk = ? AND login_fk IS NULL
+      LIMIT 1");
+  $stmt->bindParam(1, $_GET['trip_id']);
+  $stmt->execute();
+  $ticket = $stmt->fetch();
+print_r($_GET['trip_id']);
+//Assigning user id to that ticket
+  $stmt = $db->prepare(
+      "UPDATE ticket
+      SET login_fk= ?
+      WHERE tikect.id= ?");
+  $stmt->bindParam(1, $_SESSION['id']);
+  $stmt->bindParam(2, $ticket['id']);
+  $stmt->execute();
+
+}
+// Displaying trips
+if(!empty($_POST) && !empty($_POST['city_to']) && !empty($_POST['city_from']) && !empty($_POST['datetime']))
 {
   $city_to = $_POST['city_to'];
   $city_from = $_POST['city_from'];
@@ -17,7 +38,7 @@ if($isSetCityTo && $isSetCityFrom && $isSetDateTime)
   $time = $datetime[1];
 
   $stmt = $db->prepare(
-      "SELECT trip.time, trip.price, cityFrom.name as from_city, cityTo.name as to_city, SUM(IF(ticket.login_fk IS NULL, 1, 0)) as available_tickets
+      "SELECT trip.id, trip.date, trip.time, trip.price, cityFrom.name as from_city, cityTo.name as to_city, SUM(IF(ticket.login_fk IS NULL, 1, 0)) as available_tickets
       FROM ticket, trip, route
       LEFT JOIN city AS cityFrom ON  cityFrom.name = ?
       LEFT JOIN city AS cityTo ON cityTo.name = ?
@@ -40,12 +61,13 @@ elseif (isset($_GET['trips']))
   {
 
     $stmt = $db->prepare(
-        "SELECT trip.time, trip.price, cityFrom.name as from_city, cityTo.name as to_city ,SUM(IF(ticket.login_fk IS NULL, 1, 0)) as available_tickets, COUNT(ticket.login_fk) as sold_tickets
+        "SELECT trip.id, trip.date, trip.time, trip.price, cityFrom.name as from_city, cityTo.name as to_city ,SUM(IF(ticket.login_fk IS NULL, 1, 0)) as available_tickets, COUNT(ticket.login_fk) as sold_tickets
         FROM ticket, trip, route
         LEFT JOIN city AS cityFrom ON  cityFrom.id = route.city_from_fk
         LEFT JOIN city AS cityTo ON cityTo.id = route.city_to_fk
-        WHERE ticket.trip_fk = trip.id AND trip.route_fk = route.id AND (trip.date > ? OR ( trip.time > ? AND trip.date = ? )) AND available_tickets = 0
+        WHERE ticket.trip_fk = trip.id AND trip.route_fk = route.id AND (trip.date > ? OR ( trip.time > ? AND trip.date = ? ))
         GROUP BY trip.id
+        HAVING available_tickets = 0
         ORDER BY trip.date ASC, trip.time ASC
         LIMIT 0,10");
     $stmt->bindParam(1, $today);
@@ -58,13 +80,13 @@ elseif (isset($_GET['trips']))
   elseif ($getpar == "few_tickets") {
     $stmt = $db->prepare(
 
-    "SELECT trip.time, trip.price, cityFrom.name as from_city, cityTo.name as to_city ,SUM(IF(ticket.login_fk IS NULL, 1, 0)) as available_tickets, COUNT(ticket.login_fk) as sold_tickets
+    "SELECT trip.id, trip.date, trip.time, trip.price, cityFrom.name as from_city, cityTo.name as to_city ,SUM(IF(ticket.login_fk IS NULL, 1, 0)) as available_tickets, COUNT(ticket.login_fk) as sold_tickets
     FROM ticket, trip, route
     LEFT JOIN city AS cityFrom ON  cityFrom.id = route.city_from_fk
     LEFT JOIN city AS cityTo ON cityTo.id = route.city_to_fk
     WHERE ticket.trip_fk = trip.id AND trip.route_fk = route.id AND (trip.date > ? OR ( trip.time > ? AND trip.date = ? ))
     GROUP BY trip.id
-    HAVING available_tickets <= ?
+    HAVING available_tickets <= ? AND available_tickets > 0
     ORDER BY trip.date ASC, trip.time ASC
     LIMIT 0,10"
     );
@@ -79,7 +101,7 @@ elseif (isset($_GET['trips']))
   elseif ($getpar == "closest_trips") {
     $stmt = $db->prepare(
 
-    "SELECT trip.time, trip.price, cityFrom.name as from_city, cityTo.name as to_city ,SUM(IF(ticket.login_fk IS NULL, 1, 0)) as available_tickets, COUNT(ticket.login_fk) as sold_tickets
+    "SELECT trip.id, trip.date, trip.time, trip.price, cityFrom.name as from_city, cityTo.name as to_city ,SUM(IF(ticket.login_fk IS NULL, 1, 0)) as available_tickets, COUNT(ticket.login_fk) as sold_tickets
     FROM ticket, trip, route
     LEFT JOIN city AS cityFrom ON  cityFrom.id = route.city_from_fk
     LEFT JOIN city AS cityTo ON cityTo.id = route.city_to_fk

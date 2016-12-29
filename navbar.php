@@ -38,7 +38,7 @@
     <?php
     if (!isset($_SESSION['id']))
     { ?>
-        <li><a href="signup.php">Registruotis</a></li>
+        <li><a href="registration.php">Registruotis</a></li>
         <li><a href="login.php">Prisijungti</a></li>
     <?php
     }

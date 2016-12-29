@@ -1,10 +1,10 @@
 <?php
 include "config.php";
 session_start();
-if(!isset($_SESSION['username']))
-{
-  header('location: login.php');
-}
+// if(!isset($_SESSION['username']))
+// {
+//   header('location: login.php');
+// }
 
 //Select Cities from DB
 $stmt = $db->prepare("SELECT name FROM city");

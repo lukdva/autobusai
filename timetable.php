@@ -6,6 +6,11 @@ $stmt->execute();
 $cities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 
 include "timetable_Querries.php";
+
+$GETArrayHardCopy = array();
+foreach ($_GET as $key => $value) {
+  $GETArrayHardCopy[$key] = $value;
+}
  ?>
 
 <!DOCTYPE html>
@@ -66,7 +71,7 @@ include "timetable_Querries.php";
 
 
 
-<form id="searchTripForm" method="post" class="form-inline">
+<form id="searchTripForm" action="timetable.php"method="post" class="form-inline">
     <div class="container">
 
       <div class="form-group">
@@ -140,6 +145,7 @@ include "timetable_Querries.php";
                 <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th>Data</th>
                             <th>Išvykimas</th>
                             <th>Iš</th>
                             <th>Į</th>
@@ -160,14 +166,20 @@ include "timetable_Querries.php";
                           foreach ($rows as $value)
                           {
                             echo '<tr>
+                            <td>'.$value['date'].'</td>
                             <td>'.$value['time'].'</td>
                             <td>'.$value['from_city'].'</td>
                             <td>'.$value['to_city'].'</td>
                             <td>'.$value['price'].'</td>
                             <td>'.$value['available_tickets'].'</td>';
-                            if (isset($_SESSION['id']))
+                            if (isset($_SESSION['id']) && $value['available_tickets'] > 0) //is user logged in AND at least 1 ticket left
                             {
-                              echo "<td><a><button type='button' class='btn btn-primary'>Pirkti</button></a></td>";
+                              $GETArrayHardCopy['trip_id'] = $value['id'];
+                              echo "<td><a href=\"?".http_build_query($GETArrayHardCopy)."\"><button type='button' class='btn btn-primary'>Pirkti</button></a></td>";
+                            }
+                            else
+                            {
+                              echo "<td><a><button type='button' class='btn btn-primary disabled'>Pirkti</button></a></td>";
                             }
                             echo '</tr>';
                           }
