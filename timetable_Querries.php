@@ -17,12 +17,12 @@ if(isset($_GET['trip_id']))
   $stmt->bindParam(1, $_GET['trip_id']);
   $stmt->execute();
   $ticket = $stmt->fetch();
-print_r($_GET['trip_id']);
+print_r($ticket);
 //Assigning user id to that ticket
   $stmt = $db->prepare(
       "UPDATE ticket
       SET login_fk= ?
-      WHERE tikect.id= ?");
+      WHERE ticket.id= ?");
   $stmt->bindParam(1, $_SESSION['id']);
   $stmt->bindParam(2, $ticket['id']);
   $stmt->execute();

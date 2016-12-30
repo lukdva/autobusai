@@ -5,7 +5,20 @@ $GETArrayHardCopy = array();
 foreach ($_GET as $key => $value) {
   $GETArrayHardCopy[$key] = $value;
 }
+$
+//========================================================= DELETION=================================================
+if (isset($_GET['delete']))
+{
+    stmt = $db->prepare(
+      "DELETE
+      FROM bus
+      WHERE id = ?");
+    $stmt->bindParam(1, $_GET["delete"], PDO::PARAM_INT);
 
+    $stmt->execute();
+    print_r($stmt->rowCount());
+}
+//=========================================================END OF DELETION=================================================
 $stmt = $db->prepare(
   "SELECT COUNT(*) as kiek
   FROM bus");

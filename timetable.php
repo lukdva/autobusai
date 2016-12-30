@@ -149,7 +149,7 @@ foreach ($_GET as $key => $value) {
                             <th>Išvykimas</th>
                             <th>Iš</th>
                             <th>Į</th>
-                            <th>Kainas</th>
+                            <th>Kaina</th>
                             <th>Liko bilietų</th>
                             <?php
                               if (isset($_SESSION['id'])) {
