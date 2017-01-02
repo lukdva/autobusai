@@ -1,3 +1,3 @@
 <?php
-$db = new pdo('mysql:host=localhost;dbname=autobusai', 'root','')
+$db = new PDO('mysql:host=localhost;dbname=autobusai', 'root','')
  ?>

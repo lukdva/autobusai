@@ -1,22 +1,17 @@
 <?php
 include "config.php";
+include "functionsDB.php";
 
 $GETArrayHardCopy = array();
 foreach ($_GET as $key => $value) {
   $GETArrayHardCopy[$key] = $value;
 }
-$
+
 //========================================================= DELETION=================================================
 if (isset($_GET['delete']))
 {
-    stmt = $db->prepare(
-      "DELETE
-      FROM bus
-      WHERE id = ?");
-    $stmt->bindParam(1, $_GET["delete"], PDO::PARAM_INT);
-
-    $stmt->execute();
-    print_r($stmt->rowCount());
+    $response = DeleteRecord($db ,'bus', 'id', $_GET['delete']);
+    print_r($response);
 }
 //=========================================================END OF DELETION=================================================
 $stmt = $db->prepare(
