@@ -144,7 +144,7 @@ $(function() {
   </form>
 <?php
 } ?>
-      <div class="row">
+         <div class="container">
         <div class="col-md-3">
 
           <div class="list-group">
@@ -204,8 +204,6 @@ $(function() {
           </div>
         </div>
       </div>
-    </div>
-
 
 
 
