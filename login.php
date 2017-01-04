@@ -69,6 +69,7 @@
                         </div>
                           <input type="submit" value="Prisijungti" class="btn btn-primary"/>
                           <a href="registration.php"class="pull-right">Registracija</a>
+                          <br>
                           <a href="index.php"class="pull-right">Pagrindinis</a>
                       </form>
 
