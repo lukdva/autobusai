@@ -12,10 +12,8 @@ include "config.php";
       {
         $errormsg= "Passwords doesn't match";
       }
-      if(!empty($errormsg))
+      if(empty($errormsg))
       {
-        try
-        {
           $username = $_POST['username'];
           $password = md5($_POST['password']);
           $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -25,12 +23,7 @@ include "config.php";
           $stmt->bindParam(1, $username);
           $stmt->bindParam(2, $password);
           $stmt->execute();
-        }
-    catch(PDOException $e)
-    {
-      //echo $e->getMessage();
-      $isInserted = false;
-    }
+
         ?>
         <script>window.location.href='login.php'</script>
         <?php

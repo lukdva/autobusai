@@ -17,7 +17,6 @@ if(isset($_GET['trip_id']))
   $stmt->bindParam(1, $_GET['trip_id']);
   $stmt->execute();
   $ticket = $stmt->fetch();
-print_r($ticket);
 //Assigning user id to that ticket
   $stmt = $db->prepare(
       "UPDATE ticket
